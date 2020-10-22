@@ -22,6 +22,7 @@
 
 
     -- 缺点
+      css文件如果经常增加或删除，会有问题，在bulid下的css会导致重复
 
     -- 剩下的就是gulp中插件的使用，gulp是很干净的，需要使用什么就去下载插件即可(插件详细看md笔记中的gulp)
       * js常用的插件
@@ -30,6 +31,9 @@
            - 引入jshint： const jshint = require('gulp-jshint')
         (2) 语法转换
            - 安装插件： npm install --save-dev gulp-babel @babel/core @babel/preset-env
+           解析：@babel/core  babel的核心包，将es6的代码转成es5
+                @babel/preset-env 相当于设置了一个@babel/core的一个环境
+              
            - 引入：const babel = require('gulp-babel');
            注：此时只是将es6经babel转换后变成了CommonJS规范，需要browserify再次转换
         (3) gulp-browserify转CommomJS
