@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React 基本使用</title>
+    <style>
+        .box{
+            height: 300px;
+            width: 500px;
+            border: 5px solid red;
+        }
+    </style>
+   </head>
+<body>
+    <div id="root"></div>
+
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script>
+        // 命令式创建react元素,第二个参数是设置你创建的元素的属性，比较特殊的属性class和label标签的for属性应该写成className和htmlFor,如果没有属性要使用null占位
+        // const title = React.createElement('h1',null,'hello React');
+        const title = React.createElement('h1',{className:'box'},'hello React');
+        //渲染到页面
+        ReactDOM.render(title,document.querySelector('#root'));
+
+         //语法糖
+        //本身我们的语法，浏览器并不支持，也不是js标准的语法
+        // 真正执行的还是会转成最早写的方法。
+
+    </script>
+    
+</body>
+</html>
