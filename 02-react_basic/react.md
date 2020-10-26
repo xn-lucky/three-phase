@@ -249,7 +249,7 @@
 
        --- 必须要有返回值,返回的内容就是组件呈现的结构,如果返回值为null,表示不渲染任何内容。
 
-      --- 组件内部如果有多个标签,必须使用一个根标签包裹,只能有一个根标签。 
+       --- 组件内部如果有多个标签,必须使用一个根标签包裹,只能有一个根标签。 
 
       ```
          function Header(){
@@ -284,80 +284,104 @@
             ReactDOM.render(<Header/>,document.getElementById('root'))
       ```
 
-    - **组件的状态State** 
+      ​
 
-      --  函数组件又叫做无状态组件(一般只负责渲染静态结构),类组件又叫做有状态组件(负责更新UI,让页面“动”起来)。
+  - **组件的状态State** 
 
-      - 基本使用
+     --  函数组件又叫做无状态组件(一般只负责渲染静态结构),类组件又叫做有状态组件(负责更新UI,让页面“动”起来)。
 
-        -- 状态(state) 即数据, 是组件内部的私有数据, 只能在组件内部使用。
+    - 基本使用
 
-         -- state的值是对象, 表示一个组件可以有多个数据。
+      -- 状态(state) 即数据, 是组件内部的私有数据, 只能在组件内部使用。
 
-      - **获取** ：this.state
+       -- state的值是对象, 表示一个组件可以有多个数据。
 
-        ```
-            class Hello extends React.Component{
-                      constructor(){
-                        super()
-                        this.state = {count=0}//初始化一个状态state
-                      }
-                   
-                      render(){
-                         return <div>{this.state.count}</div>
-                       }
-                  }
-        ```
+    - **获取** ：this.state
 
-      - 操作State
+      ```
+          class Hello extends React.Component{
+                    constructor(){
+                      super()
+                      this.state = {count=0}//初始化一个状态state
+                    }
+                 
+                    render(){
+                       return <div>{this.state.count}</div>
+                     }
+                }
+      ```
 
-        -- this.setState({要修改的数据})
+    - 操作State
 
-        ​    **setState的作用是: 1|修改state的值, 2|并更新UI**
+      -- this.setState({要修改的数据})
 
-        -- **注意** :不要直接修改state中的值, 应该使用组件实例的setState方法, 修改state的值
+      ​    **setState的作用是: 1|修改state的值, 2|并更新UI**
 
-        ```
-           class Hello extends React.Component{
-                       constructor(){
-                         super()
-                         this.state= {count:1}
-                       }
-                       
-                       render(){
-                       
-                         return <div onClick={()={
-                           this.setState({
-                             count:this.state.count + 1
-                           })
-                         }}>{this.state.count}</div>
-                       }
-                  }
-        ```
+      -- **注意** :不要直接修改state中的值, 应该使用组件实例的setState方法, 修改state的值
 
-        ​
+      ```
+         class Hello extends React.Component{
+                     constructor(){
+                       super()
+                       this.state= {count:1}
+                     }
+                     
+                     render(){
+                     
+                       return <div onClick={()={
+                         this.setState({
+                           count:this.state.count + 1
+                         })
+                       }}>{this.state.count}</div>
+                     }
+                }
+      ```
 
-      - 2
+  - **组件的props** 
 
-      - 3
+     --- 组件是封闭的,要接收外部数据应该通过props来实现
 
-        ​
+    - **作用** : 接收传递给组件的数据
 
-        ​
+    - **传递数据方式** :给组件标签添加属性
 
-        ​
+    - **接收数据方式** : 函数组件通过props接收数据,类组件通过this.props接收数据
 
-        ​
+      ```
+      //在其他的组件中,使用了Header
+      <Header name='jack' age={19} />
 
-    - 2
+      //函数组件
+      function Hello(props) { 
+        console.log(props) 
+        return ( 
+          <div>接收到数据：{props.name}</div> 
+        ) 
+      } 
 
-    - 3
-
-    - 4
-
-    - 5
+      //类组件
+      class Hello extends React.Component { 
+        render() { 
+          return ( 
+            <div>接收到的数据：{this.props.age}</div> 
+          ) 
+        } 
+      } 
+      ```
 
       ​
+
+  - 1
+
+  - 2
+
+  - 3
+
+  - 4
+
+  - 5
+
+    ​
 
 - 2
 
