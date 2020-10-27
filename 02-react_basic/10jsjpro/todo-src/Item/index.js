@@ -27,13 +27,19 @@ export default class Item extends Component {
         })
     }
     //当复选框的值改变的时候发生的事件
-    handleChange=()=>{
+    handleChange=(e)=>{
+        //获取当前元素的checked状态和id
+        // const checked = e.target.checked;
+        //当复选框修改的时候调用App中定义的函数,传id
+        this.props.updatetodo(this.props.item.id)
+        
 
     }
     //删除按钮绑定点击事件
     clickDel=(e)=>{
         // 获取事件源 找到数据，进行删除，同时也是要修改App中的state中的todos数据
         console.log(e.target)
+        this.props.deltodo(this.props.item.id)
 
 
     }

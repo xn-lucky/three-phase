@@ -17,7 +17,7 @@
 
       - 命令式创建react元素（不是真正的dom元素,是React元素(虚拟dom)）
 
-        ```
+        ```js
         /* 命令式创建react元素
         第一个参数:标签名
         第二个参数:是设置你创建的元素的属性，比较特殊的属性class和label标签的for属性应该写成className和htmlFor,如果没有属性要使用null占位
@@ -42,19 +42,19 @@
 
 ​       -- js代码写入的script中的type属性值应为text/babel,被babel编译后的代码是严格模式下的。
 
-    ```
-     <div id="root"></div>
-        <script src="./js/react.development.js"></script>
-        <script src="./js/react-dom.development.js"></script>
-        <script src="./js/babel.min.js"></script>
-        <script type="text/babel">
-        //创建元素
-        const h1 = <h1> 我是jsx创建的</h1>
-        //渲染
-        ReactDOM.render(h1,document.querySelector('#root'));
-     
-        </script>
-    ```
+```html
+ <div id="root"></div>
+    <script src="./js/react.development.js"></script>
+    <script src="./js/react-dom.development.js"></script>
+    <script src="./js/babel.min.js"></script>
+    <script type="text/babel">
+    //创建元素
+    const h1 = <h1> 我是jsx创建的</h1>
+    //渲染
+    ReactDOM.render(h1,document.querySelector('#root'));
+ 
+    </script>
+```
 
 - **插入数据** 
 
@@ -68,7 +68,7 @@
 
      **注意的是: 插值表达式中,可以传入对象和函数,但是不能直接去渲染，如果渲染的时候,插值表达式写了对象和函数,就会报错。因为react不知道如何将对象和函数渲染到页面上,如果要写对象,应该是一个react元素**
 
-  ```
+  ```js
          //插入数据
           let data = 'giaogiaogiao'
           let data1 = {name:'lili'}
@@ -84,7 +84,7 @@
 
 - **条件渲染** 
 
-  ```
+  ```js
     let age = 17
               // 工作中经常使用与逻辑实现条件判断
             // 注意: 如果是有条数据,不是渲染a,就是渲染b的时候,应该使用if或三元
@@ -103,7 +103,7 @@
 
    -- 在执行map的过程中,最外表的那个标签必须要加一个key属性,属性的值要求是唯一的。
 
-  ```
+  ```js
   let arr = [{
                   name: '呸hua',
                   age: 38,
@@ -131,13 +131,13 @@
 
   -- 行内样式 : 若样式是数值,可以省略单位。
 
-  ```
+  ```js
   <div style={ { color: 'red', fontSize: 30 } }>web</div>
   ```
 
    -- **类名(推荐使用)**
 
-  ```
+  ```js
    <div className="abc">web</div>
   ```
 
@@ -159,7 +159,7 @@
 
   ​    ** 如果在控制台打印事件对象,属性值都是null，如果一定要看的话,调用事件对象.presist()方法。
 
-  ```
+  ```js
   <script type="text/babel">
           let link = <a href='' onClick={(e)=>{
               console.log('被点击了');
@@ -178,7 +178,7 @@
 
 - React案例
 
-  ```
+  ```js
   <script type='text/babel'>
                 /* 
                   实现评论列表功能
@@ -251,7 +251,7 @@
 
        --- 组件内部如果有多个标签,必须使用一个根标签包裹,只能有一个根标签。 
 
-      ```
+      ```js
          function Header(){
                 return <div>我是函数组件</div>
              }
@@ -273,7 +273,7 @@
 
         --- 类组件应该继承 React.Component 父类，从而可以使用父类中提供的方法或属性 。
 
-      ```
+      ```js
       class Header extends React.Component{
               render(){
                    return <div>我是类组件</div>
@@ -298,7 +298,7 @@
 
     - **获取** ：this.state
 
-      ```
+      ```js
           class Hello extends React.Component{
                     constructor(){
                       super()
@@ -319,7 +319,7 @@
 
       -- **注意** :不要直接修改state中的值, 应该使用组件实例的setState方法, 修改state的值
 
-      ```
+      ```js
          class Hello extends React.Component{
                      constructor(){
                        super()
@@ -337,17 +337,120 @@
                 }
       ```
 
+  - **事件绑定的this指向问题**
+
+     - **出现问题的原因** : 为了提高代码的阅读性,我们推荐把事件处理函数定义在结构的外面,但是这种情况下带来了this指向的问题
+
+       ```js
+       问题代码:
+       class Hello extends React.Component {
+           constructor() {
+               super() 
+               this.state = { count: 0, num: 100 }// 初始化state
+           }
+
+          //定义的普通函数,(babel编译jsx,采用的是严格模式,普通函数this就指向undefined)
+           handle() {
+               //这里this指向undefined
+               this.setState({
+                   count: this.state.count + 1
+               })
+           }
+
+           render() {
+             //这边直接将this.handle函数作为了事件函数
+               return <div onClick={this.handle}>{this.state.count}</div>
+           }
+       }
+
+       ```
+
+     - 解决方法1 (解决this的指向)----箭头函数
+
+       ```js
+       class Hello extends React.Component {
+           constructor() {
+               super() 
+               this.state = { count: 0, num: 100 }// 初始化state
+           }
+
+           handle() {
+               //这里this指向类组件实例对象
+               this.setState({
+                   count: this.state.count + 1
+               })
+           }
+
+           render() {
+             //此时将箭头函数作为了事件函数,此时的handle是通过this类对象调用的，故handle中的this指向类实例对象
+             return <div onClick={()=>{
+                                  this.handle();
+                                 }}>{this.state.count}</div>
+           }
+       }
+       ```
+
+     - 解决方法2 (解决this指向) ----bind
+
+       ```js
+       class Hello extends React.Component {
+           constructor() {
+               super() 
+               this.state = { count: 0, num: 100 }// 初始化state
+             //使用bind方法,利用bind的特性，赋值运算先算右边的，就是说将this.handle函数的this改为指向实例化对象,将返回的函数赋值给当前实例对象上的handle属性
+               this.handle = this.handle.bind(this)
+           }
+
+        
+           handle() {
+               //通过bind方法改变了this指向,此时这里面的this指向组件实例
+               this.setState({
+                   count: this.state.count + 1
+               })
+           }
+
+           render() {
+             //这边直接将this.handle函数作为了事件函数
+               return <div onClick={this.handle}>{this.state.count}</div>
+           }
+       }
+
+       ```
+
+     - 解决方法3 (解决this指向) ---- 类的实例方法
+
+       ```js
+       class Hello extends React.Component {
+          // es7草案中,提案,如果要给当前类实例添加属性,就不需要写constructor了.应该使用下面的语法
+           state = {
+              count: 1
+            }
+          // 这样定义函数.这个函数,直接添加到了当前组件的实例身上
+         // 注意:虽然是es7草案的语法.但是因为脚手架中使用了babel.所以可以放心使用
+           handle = () => {
+               //这是箭头函数本身没有this,所以会依次向父级函数寻找,此时这里this指向组件实例
+               this.setState({
+                   count: this.state.count + 1
+               })
+           }
+
+           render() {
+               return <div onClick={this.handle}>{this.state.count}</div>
+           }
+       }
+       ```
+
   - **组件的props** 
 
      --- 组件是封闭的,要接收外部数据应该通过props来实现
 
-    - **作用** : 接收传递给组件的数据
+    - **作用** : 接收外部传递给组件的数据
 
     - **传递数据方式** :给组件标签添加属性
 
     - **接收数据方式** : 函数组件通过props接收数据,类组件通过this.props接收数据
 
-      ```
+      ```js
       //在其他的组件中,使用了Header
       <Header name='jack' age={19} />
 
@@ -369,23 +472,131 @@
       } 
       ```
 
+    - **props特点** 
+
+      - **props是只读的对象,只能读取属性的值,不能修改props(修改报错)**。(主要记住)
+
+      - 可以给组件传递任意类型的数据
+
+      - **使用类组件,若写了constructor,应该将props传递给super(), 否则,无法在构造函数中获取到props** 
+
+        ```js
+        class Hello extends React.Component{
+           constructor(props){
+             //推荐将props传递给父类构造函数
+             super(props)
+           }
+           
+           render(){
+             return <div>{this.props.age}</div>
+           }
+        }
+        ```
+
+    - **props校验** (函数组件和类组件都有校验规则)
+
+      - **作用** : 使因为props导致的错误,可以给出明确的错误提示,增加组件的健壮性。
+
+      - **实现方式**
+
+        -- 导入prop-types包
+
+        -- 给组件添加静态属性propTypes来给组件的props添加校验规则
+
+        ```js
+        /*常见类型：array、bool、func、number、object、string还有element(react元素)
+          也会传组件*/
+        // 必填项：isRequired 
+        // 特定结构的对象：shape({  }) 
+
+        //1、导包
+        import PropTypes from 'prop-types'
+        class Header extends React.Component{
+          render(){
+            return <div>{'测试props校验'}</div>
+          }
+        }
+        //2、添加校验规则
+        Header.propTypes = {
+          //属性名:属性值得类型
+          name:PropTypes.string ,// name属性,值为字符串类型
+          list: PropTypes.array.isRequired,//传过来的list是一个数组且必填
+          gender: PropTypes.oneOf(['男', '女']),//传过来的gender在两个中选择其中一个值
+          obj: PropTypes.shape({
+                color: PropTypes.string.isRequired,//这个参数为必传
+                fontSize: PropTypes.number
+              })//传进来一个特定结构的数据
+          
+        }
+        ```
+
+      - **props默认值** 
+
+        -- 作用：给props设置默认值, 在未传入props时生效
+
+        ```js
+        //添加默认属性
+        Header.defaultProps = {
+            name:'lili'//这边定义默认属性,若有传值，则会覆盖这个属性，没有传值则显示这个属性，通过也可以通过props校验
+        }
+        ```
+
+- ####表单处理
+
+  - **受控组件(重要)** 
+
+    -- js中的表单项的值被组件中的状态所控制,我们就叫受控组件。
+
+    - 实现方式
+
+      -- 在state中添加一个状态,作为表单元素的value值(有时复选框的checked也会依赖于state中的某个值)。(**控制表单元素值的来源**) 
+
+      -- 给表单元素绑定change事件, 将表单元素的值 设置为state的值(**控制表单元素值得变化**)
+
+      ```
+      补充: 文本框、文本域、下拉框 操作value属性, 复选框 操作checked属性
+
+      ```
+
+      ​
+
+    - ​
+
       ​
 
   - 1
 
-  - 2
+  - 非受控组件(非受控组件直接操作dom)
 
-  - 3
+     -- 借助于ref(ref的作用：获取DOM或组件), 使用原生DOM方式来获取表单元素值。
 
-  - 4
+    - 实现方式
 
-  - 5
+      -- 1、调用React.createRef() 方法创建一个ref对象
 
-    ​
+      ```js
+      constructor() { 
+        super() 
+        //创建一个ref对象，存放在当前组件实例对象上
+        this.txtRef = React.createRef() 
+      }
+      ```
 
-- 2
+      -- 2、将创建好的ref对象添加到文本框中
 
-- 3
+      ```js
+      //将react元素与ref进行关联
+      <input type="text" ref={this.txtRef} />
+      ```
+
+      -- 3、通过ref对象获取到文本框的值
+
+      ```js
+      //在哪里使用，就直接通过this.textRef.current获取当前dom,在通过value获取值
+      Console.log(this.txtRef.current.value)
+      ```
+
+-  3
 
 
 - 1

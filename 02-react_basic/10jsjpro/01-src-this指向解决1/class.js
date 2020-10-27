@@ -23,6 +23,7 @@ export default class title extends React.Component{
             <Header/>
             <h3 title={'我是state'}>{this.state.count}</h3>
             <button onClick={()=>{
+                
                 this.handleCount()
             }}>点击state增加</button>
         </div>)

@@ -17,7 +17,8 @@ export default class Header extends Component {
         //设置值
         const value = e.target.value;
         this.setState({
-            todoName:value
+            /* 这边去空格,使空格输入不了 */
+            todoName:value.trim()
         })
     }
     addTodo = (e)=>{
@@ -30,12 +31,19 @@ export default class Header extends Component {
       */
      //判断如果是按下了回车键并抬起
      if(e.keyCode === 13){
-        //  console.log(this.props)
+         //需要判断输入的值是否为空(或者直接输入回车的时候，也不能添加数据)，不为空才可以添加，否则不执行下面的代码
+          if(!this.state.todoName)return
+        //   console.log(Boolean(this.state.todoName))
          this.props.addtodos(this.state.todoName)
+         //处理完增加数据之后,要将输入框的值清空,直接设置状态中的值即可
+         this.setState({
+             todoName:''
+         })
      }
       
     }
     render() {
+        console.log('header---',this.props.list)
         return (
             <div className="todo-header">
                 {/* 按键回车后，希望输入的值可以添加到列表中，所以给输入框绑定一个回车键的键盘事件 */}
