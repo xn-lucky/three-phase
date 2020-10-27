@@ -32,16 +32,17 @@ export default class Item extends Component {
         // const checked = e.target.checked;
         //当复选框修改的时候调用App中定义的函数,传id
         this.props.updatetodo(this.props.item.id)
+        console.log(e.target.className = 'one')
+
+        // checked?e.target.className='one':e.target.className=''
         
 
     }
     //删除按钮绑定点击事件
     clickDel=(e)=>{
         // 获取事件源 找到数据，进行删除，同时也是要修改App中的state中的todos数据
-        console.log(e.target)
+        // console.log(e.target)
         this.props.deltodo(this.props.item.id)
-
-
     }
 
     render() {
@@ -52,8 +53,8 @@ export default class Item extends Component {
         return (
             /* 当鼠标移入时，删除按钮要显示出来，鼠标移出是要隐藏，所以给li绑定事件 */
             <li onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-                <label>
-                  <input type="checkbox" checked={item.isDone} onChange={this.handleChange}/>
+                <label className = {item.isDone?'done':''}>
+                  <input type="checkbox"  checked={item.isDone} onChange={this.handleChange}/>
                   <span>{item.todoName}</span>
                 </label>
                 <button className="btn btn-danger" style={{display:this.state.isShow?'block':'none'}} onClick={this.clickDel}>删除</button>

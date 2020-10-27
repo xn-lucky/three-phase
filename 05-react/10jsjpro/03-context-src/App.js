@@ -1,23 +1,21 @@
 import React from 'react'
 
 import Far from './pages/Far'
+import context from './context'
 
-import PubSub from 'pubsub-js'
+const {Provider,Consumer} = context
 
 export default class App extends React.Component{
     state = {
         count:0
     }
-    componentDidMount(){
-        //一般是在组件挂载成功后，订阅
-        PubSub.publish('topic','hello Son')
-    }
-    
     render(){
         return (
+           <Provider value='123'>
             <div>
                 <Far/>
-            </div>    
+            </div>
+           </Provider>
         )    
     }
 } 
