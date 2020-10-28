@@ -10,7 +10,7 @@ export default class App extends React.Component{
     }
     componentDidMount(){
         //一般是在组件挂载成功后，订阅
-        PubSub.publish('topic','hello Son')
+       
     }
     
     render(){
