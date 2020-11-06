@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {Provider} from 'react-redux'
 import store from './redux/store'
 
+
 /*
   1. 将class --> className
   2. 将没有结束符标签加上结束符：input img
